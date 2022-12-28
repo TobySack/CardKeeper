@@ -1,0 +1,34 @@
+CREATE TABLE cardEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    image TEXT NOT NULL,
+    barcode TEXT NOT NULL,
+    color INTEGER NOT NULL,
+    created INTEGER NOT NULL,
+    notes TEXT NOT NULL
+);
+
+getCardById:
+SELECT *
+FROM cardEntity
+WHERE id = ?;
+
+getAllCards:
+SELECT *
+FROM cardEntity;
+
+insertCard:
+INSERT OR REPLACE
+INTO cardEntity(
+    id,
+    name,
+    image,
+    barcode,
+    color,
+    created,
+    notes
+) VALUES (?,?,?,?,?,?,?);
+
+deleteCard:
+DELETE FROM cardEntity
+WHERE id = ?;

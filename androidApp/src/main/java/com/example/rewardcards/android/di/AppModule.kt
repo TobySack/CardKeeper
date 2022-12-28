@@ -1,0 +1,30 @@
+package com.example.rewardcards.android.di
+
+import android.app.Application
+import com.example.rewardcards.data.card.SqlDelightCardDataSource
+import com.example.rewardcards.data.local.DatabaseDriverFactory
+import com.example.rewardcards.database.CardDatabase
+import com.example.rewardcards.domain.card.CardDataSource
+import com.squareup.sqldelight.db.SqlDriver
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideSqlDriver(app: Application): SqlDriver {
+        return DatabaseDriverFactory(app).createDriver()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCardDataSource(driver: SqlDriver): CardDataSource {
+        return SqlDelightCardDataSource(CardDatabase(driver))
+    }
+}
