@@ -44,7 +44,7 @@ fun CardListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("cardDetail/-1L")
+                    navController.navigate("cardAdd")
                 },
                 backgroundColor = Color.Black
             ) {
