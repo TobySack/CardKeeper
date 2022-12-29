@@ -19,7 +19,7 @@ class CardAddViewModel @Inject constructor(
 
     private val cardName = savedStateHandle.getStateFlow("cardName", "")
     private val cardImage = savedStateHandle.getStateFlow("cardImage", "")
-    private val cardBarcode = savedStateHandle.getStateFlow("cardBarcode", "")
+    private val cardBarcode = savedStateHandle.getStateFlow("cardBarcode", "No Barcode")
     private val cardColor = savedStateHandle.getStateFlow("cardColor", Card.generateRandomColor())
     private val cardNotes = savedStateHandle.getStateFlow("cardNotes", "")
     private val isCardNameFocused = savedStateHandle.getStateFlow("isCardNameFocused", false)
@@ -27,6 +27,9 @@ class CardAddViewModel @Inject constructor(
 
     private val _hasCardBeenSaved = MutableStateFlow(false)
     val hasCardBeenSaved = _hasCardBeenSaved.asStateFlow()
+
+    private val _isCameraActive = MutableStateFlow(true)
+    val isCameraActive = _isCameraActive.asStateFlow()
 
     private var cardId: Long? = null
 
@@ -75,8 +78,12 @@ class CardAddViewModel @Inject constructor(
         savedStateHandle["cardName"] = text
     }
 
-    fun onCardBarcodeChanged(text: String) {
+    fun setBarcode(text: String) {
         savedStateHandle["cardBarcode"] = text
+    }
+
+    fun getBarcode(): String {
+        return cardBarcode.value
     }
 
     fun onCardNotesChanged(text: String) {
@@ -89,6 +96,10 @@ class CardAddViewModel @Inject constructor(
 
     fun onCardNotesFocusedChanged(isFocused: Boolean) {
         savedStateHandle["isCardNotesFocused"] = isFocused
+    }
+
+    fun setCameraActiveState(state: Boolean) {
+        _isCameraActive.value = state
     }
 
     fun saveCard() {

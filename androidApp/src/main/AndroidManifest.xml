@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-feature android:name="android.hardware.camera.any"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:name=".CardApp"
+        android:label="@string/appName"
+        android:windowSoftInputMode="adjustResize"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
