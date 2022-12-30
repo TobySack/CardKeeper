@@ -1,6 +1,7 @@
 package com.example.rewardcards.android.cardAdd
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -86,7 +87,7 @@ fun CardAddScreen(
                 Text(
                     text = barcodeText,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(8.dp, 16.dp)
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -108,18 +109,17 @@ fun CardAddScreen(
                             Barcode(
                                 modifier = Modifier
                                     .align(Alignment.Center)
-                                    .aspectRatio(1f)
-                                    .width(300.dp)
-                                    .height(300.dp),
+                                    .aspectRatio(16f / 9f)
+                                    .width(250.dp)
+                                    .height(250.dp),
                                 resolutionFactor = 10,
                                 type = foundBarcodeType,
                                 value = barcodeText
                             )
+                        } else {
+                            Text("Could not render a Barcode")
                         }
 
-                        if (!foundBarcodeType.isValueValid(barcodeText)) {
-                            Text("this is not code 128 compatible")
-                        }
                         Button(
                             onClick = { viewModel.setCameraActiveState(true) },
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
