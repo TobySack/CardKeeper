@@ -48,15 +48,3 @@ fun CardItem(
         }
     }
 }
-
-@Preview
-@Composable
-fun CardItemView() {
-    CardItem(
-        card = Card(-1, "Burger King", "Test", "23123123", 0xFFFFFFFF, DateTimeUtil.now(), "Test"),
-        backgroundColor = Color(0xFFFFFFFF),
-        onCardClick = {},
-        modifier = Modifier
-            .padding(16.dp)
-    )
-}

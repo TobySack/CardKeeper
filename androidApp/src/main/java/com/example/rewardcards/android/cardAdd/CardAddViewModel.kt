@@ -20,6 +20,7 @@ class CardAddViewModel @Inject constructor(
     private val cardName = savedStateHandle.getStateFlow("cardName", "")
     private val cardImage = savedStateHandle.getStateFlow("cardImage", "")
     private val cardBarcode = savedStateHandle.getStateFlow("cardBarcode", "No Barcode")
+    private val cardType: StateFlow<Int> = savedStateHandle.getStateFlow("cardType", -1)
     private val cardColor = savedStateHandle.getStateFlow("cardColor", Card.generateRandomColor())
     private val cardNotes = savedStateHandle.getStateFlow("cardNotes", "")
     private val isCardNameFocused = savedStateHandle.getStateFlow("isCardNameFocused", false)
@@ -31,28 +32,24 @@ class CardAddViewModel @Inject constructor(
     private val _isCameraActive = MutableStateFlow(true)
     val isCameraActive = _isCameraActive.asStateFlow()
 
-    private val _barcodeValue = MutableStateFlow("")
-    val barcodeValue = _barcodeValue.asStateFlow()
-
-    private val _barcodeType = MutableStateFlow(-1)
-    val barcodeType = _barcodeType.asStateFlow()
-
     private var cardId: Long? = null
 
     val state = combine(
         cardName,
         cardImage,
         cardBarcode,
+        cardType,
         cardColor,
         cardNotes,
         isCardNameFocused,
         isCardNotesFocused
     ) {
-        name, image, barcode, color, notes, isNameFocused, isNotesFocused ->
+        name, image, barcode, type, color, notes, isNameFocused, isNotesFocused ->
         CardAddState(
             cardName = name,
             cardImage = image,
             cardBarcode = barcode,
+            cardType = type,
             cardColor = color,
             cardNotes = notes,
             isCardNameHintVisible = name.isEmpty() && !isNameFocused,
@@ -73,6 +70,7 @@ class CardAddViewModel @Inject constructor(
                     savedStateHandle["cardName"] = card.name
                     savedStateHandle["cardImage"] = card.image
                     savedStateHandle["cardBarcode"] = card.barcode
+                    savedStateHandle["cardType"] = card.type
                     savedStateHandle["cardNotes"] = card.notes
                     savedStateHandle["cardColor"] = card.color
                 }
@@ -86,11 +84,10 @@ class CardAddViewModel @Inject constructor(
 
     fun setBarcode(text: String) {
         savedStateHandle["cardBarcode"] = text
-        _barcodeValue.value = text
     }
 
     fun setType(type: Int) {
-        _barcodeType.value = type
+        savedStateHandle["cardType"] = type
     }
 
     fun onCardNotesChanged(text: String) {
@@ -111,7 +108,7 @@ class CardAddViewModel @Inject constructor(
 
     fun saveCard() {
         viewModelScope.launch {
-            if (cardName.value.isNullOrEmpty()) {
+            if (cardName.value.isEmpty()) {
                 return@launch
             }
 
@@ -121,6 +118,7 @@ class CardAddViewModel @Inject constructor(
                     name = cardName.value,
                     image = cardImage.value,
                     barcode = cardBarcode.value,
+                    type = cardType.value,
                     color = cardColor.value,
                     created = DateTimeUtil.now(),
                     notes = cardNotes.value
@@ -135,15 +133,16 @@ class CardAddViewModel @Inject constructor(
         flow: StateFlow<String>,
         flow2: StateFlow<String>,
         flow3: StateFlow<String>,
-        flow4: StateFlow<Long>,
-        flow5: StateFlow<String>,
-        flow6: StateFlow<Boolean>,
+        flow4: StateFlow<Int>,
+        flow5: StateFlow<Long>,
+        flow6: StateFlow<String>,
         flow7: StateFlow<Boolean>,
-        transform: suspend (String, String, String, Long, String, Boolean, Boolean) -> CardAddState
+        flow8: StateFlow<Boolean>,
+        transform: suspend (String, String, String, Int, Long, String, Boolean, Boolean) -> CardAddState
     ): Flow<CardAddState> = combine(
         combine(flow, flow2, ::Pair),
-        combine(flow3, flow4, ::Pair),
-        combine(flow5, flow6, flow7, ::Triple)
+        combine(flow3, flow4, flow5, ::Triple),
+        combine(flow6, flow7, flow8, ::Triple)
     ) {
         t1, t2, t3 ->
         transform(
@@ -151,6 +150,7 @@ class CardAddViewModel @Inject constructor(
             t1.second,
             t2.first,
             t2.second,
+            t2.third,
             t3.first,
             t3.second,
             t3.third

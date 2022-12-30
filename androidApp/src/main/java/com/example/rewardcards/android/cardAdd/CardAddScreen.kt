@@ -29,8 +29,7 @@ fun CardAddScreen(
     val state by viewModel.state.collectAsState()
     val hasCardBeenSaved by viewModel.hasCardBeenSaved.collectAsState()
     val isCameraActive by viewModel.isCameraActive.collectAsState()
-    val barcodeText by viewModel.barcodeValue.collectAsState()
-    val barcodeType by viewModel.barcodeType.collectAsState()
+    val barcodeText = state.cardBarcode
 
     LaunchedEffect(key1 = hasCardBeenSaved) {
         if (hasCardBeenSaved) {
@@ -104,7 +103,7 @@ fun CardAddScreen(
                         // Barcode is empty so user didn't give permissions for the camera. Would want to let them manually enter the text
                     } else {
                         // Camera isn't active & we have text. Let user have option to retry
-                        val foundBarcodeType = getType(barcodeType)
+                        val foundBarcodeType = getType(state.cardType)
                         if (foundBarcodeType.isValueValid(barcodeText)) {
                             Barcode(
                                 modifier = Modifier

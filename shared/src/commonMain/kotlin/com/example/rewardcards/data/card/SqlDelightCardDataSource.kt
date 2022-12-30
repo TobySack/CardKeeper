@@ -14,6 +14,7 @@ class SqlDelightCardDataSource(db: CardDatabase): CardDataSource {
             name = card.name,
             image = card.image,
             barcode = card.barcode,
+            type = card.type,
             color = card.color,
             created = DateTimeUtil.toEpochMillis(card.created),
             notes = card.notes

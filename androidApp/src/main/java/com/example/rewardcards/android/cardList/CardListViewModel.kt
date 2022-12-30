@@ -39,19 +39,31 @@ class CardListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             if (cardDataSource.getAllCards().isEmpty()) {
-                (1..2).forEach {
-                    cardDataSource.insertCard(
-                        Card(
-                            id = null,
-                            name = "McDonalds",
-                            image = "null",
-                            barcode = "69010140244368707",
-                            color = RedOrangeHex,
-                            created = DateTimeUtil.now(),
-                            notes = BabyBlueHex.toString()
-                        )
+                cardDataSource.insertCard(
+                    Card(
+                        id = null,
+                        name = "Sam's Club",
+                        image = "null",
+                        barcode = "69010140244368707",
+                        type = 1,
+                        color = RedOrangeHex,
+                        created = DateTimeUtil.now(),
+                        notes = "None"
                     )
-                }
+                )
+
+                cardDataSource.insertCard(
+                    Card(
+                        id = null,
+                        name = "Burger King",
+                        image = "null",
+                        barcode = "69010140244368707",
+                        type = 1,
+                        color = BabyBlueHex,
+                        created = DateTimeUtil.now(),
+                        notes = "None"
+                    )
+                )
             }
         }
     }

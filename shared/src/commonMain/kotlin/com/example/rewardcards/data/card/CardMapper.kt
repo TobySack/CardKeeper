@@ -12,6 +12,7 @@ fun CardEntity.toCard(): Card {
         name = name,
         image = image,
         barcode = barcode,
+        type = type,
         color = color,
         created = Instant
             .fromEpochMilliseconds(created)

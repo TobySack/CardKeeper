@@ -3,6 +3,7 @@ CREATE TABLE cardEntity (
     name TEXT NOT NULL,
     image TEXT NOT NULL,
     barcode TEXT NOT NULL,
+    type INTEGER AS Int NOT NULL,
     color INTEGER NOT NULL,
     created INTEGER NOT NULL,
     notes TEXT NOT NULL
@@ -24,10 +25,11 @@ INTO cardEntity(
     name,
     image,
     barcode,
+    type,
     color,
     created,
     notes
-) VALUES (?,?,?,?,?,?,?);
+) VALUES (?,?,?,?,?,?,?,?);
 
 deleteCard:
 DELETE FROM cardEntity
