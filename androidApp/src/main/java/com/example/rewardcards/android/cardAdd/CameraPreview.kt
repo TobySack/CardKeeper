@@ -8,24 +8,12 @@ import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -67,23 +55,6 @@ fun CameraPreview(
                 previewView
             }
         )
-
-        IconButton(
-            modifier = Modifier.padding(16.dp),
-            onClick = { /* TODO */ },
-            content = {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = "Take picture",
-                    tint = Color.Black,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .border(1.dp, Color.Black, CircleShape)
-                )
-            }
-        )
     }
 }
 
@@ -108,12 +79,13 @@ private fun startCamera(context: Context, previewView: PreviewView, lifecycleOwn
                 (barcodeResults.first() == null)
             ) {
                 previewView.overlay.clear()
-                previewView.setOnTouchListener { _, _ -> false } //no-op
+                previewView.setOnTouchListener { _, _ -> false }
                 return@MlKitAnalyzer
             }
 
             if (barcodeResults.isNotEmpty()) {
                 viewModel.setCameraActiveState(false)
+                viewModel.setType(barcodeResults[0].format)
                 viewModel.setBarcode(barcodeResults[0].rawValue.toString())
             }
         }

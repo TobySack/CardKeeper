@@ -31,6 +31,12 @@ class CardAddViewModel @Inject constructor(
     private val _isCameraActive = MutableStateFlow(true)
     val isCameraActive = _isCameraActive.asStateFlow()
 
+    private val _barcodeValue = MutableStateFlow("")
+    val barcodeValue = _barcodeValue.asStateFlow()
+
+    private val _barcodeType = MutableStateFlow(-1)
+    val barcodeType = _barcodeType.asStateFlow()
+
     private var cardId: Long? = null
 
     val state = combine(
@@ -80,10 +86,11 @@ class CardAddViewModel @Inject constructor(
 
     fun setBarcode(text: String) {
         savedStateHandle["cardBarcode"] = text
+        _barcodeValue.value = text
     }
 
-    fun getBarcode(): String {
-        return cardBarcode.value
+    fun setType(type: Int) {
+        _barcodeType.value = type
     }
 
     fun onCardNotesChanged(text: String) {

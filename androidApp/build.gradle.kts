@@ -56,9 +56,11 @@ dependencies {
     // Barcode model dependencies
     implementation("com.google.mlkit:barcode-scanning:17.0.3")
 
-    //CameraX
+    // CameraX
     implementation("androidx.camera:camera-camera2:1.3.0-alpha02")
     implementation("androidx.camera:camera-lifecycle:1.3.0-alpha02")
     implementation("androidx.camera:camera-view:1.3.0-alpha02")
     implementation("androidx.camera:camera-mlkit-vision:1.3.0-alpha02")
+
+    implementation("com.simonsickle:composed-barcodes:1.1.1")
 }
