@@ -12,11 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rewardcards.domain.card.Card
-import com.example.rewardcards.domain.time.DateTimeUtil
 
 @Composable
 fun CardItem(
@@ -36,6 +34,7 @@ fun CardItem(
         Row {
             Text(
                 text = card.name,
+                color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 17.sp,
                 textAlign = TextAlign.Center,

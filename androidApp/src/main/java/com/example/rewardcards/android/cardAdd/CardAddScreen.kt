@@ -154,23 +154,3 @@ fun CardAddScreen(
         }
     }
 }
-
-private fun getType(type: Int): BarcodeType {
-    val types = mapOf(
-        BarcodeType.CODE_128 to 1,
-        BarcodeType.CODE_39 to 2,
-        BarcodeType.CODE_93 to 4,
-        BarcodeType.CODABAR to 8,
-        BarcodeType.DATA_MATRIX to 16,
-        BarcodeType.EAN_13 to 32,
-        BarcodeType.EAN_8 to 64,
-        BarcodeType.ITF to 128,
-        BarcodeType.QR_CODE to 256,
-        BarcodeType.UPC_A to 512,
-        BarcodeType.UPC_E to 1024,
-        BarcodeType.PDF_417 to 2048,
-        BarcodeType.AZTEC to 4096
-    )
-
-    return types.filterValues { it == type }.keys.first()
-}

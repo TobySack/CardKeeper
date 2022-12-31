@@ -12,9 +12,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.rewardcards.android.cardAdd.CardAddScreen
+import com.example.rewardcards.android.cardDetail.CardDetailScreen
 import com.example.rewardcards.android.cardList.CardListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +49,18 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = "cardAdd") {
                         CardAddScreen(navController = navController)
+                    }
+                    composable(
+                        route = "cardDetail/{cardId}",
+                        arguments = listOf(
+                            navArgument(name = "cardId") {
+                                type = NavType.LongType
+                                defaultValue = -1L
+                            }
+                        )
+                    ) { backStackEntry ->
+                        val cardId = backStackEntry.arguments?.getLong("cardId") ?: -1L
+                        CardDetailScreen(cardId = cardId, navController = navController)
                     }
                 }
             }

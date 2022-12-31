@@ -24,13 +24,19 @@ fun MyApplicationTheme(
         darkColors(
             primary = Color(0xFFBB86FC),
             primaryVariant = Color(0xFF3700B3),
-            secondary = Color(0xFF03DAC5)
+            secondary = Color(0xFF03DAC5),
+            background = Color(0xFF1A1A1A),
+            surface = Color(0xFF404040),
+            onSurface = Color(0xFFFFFFFF)
         )
     } else {
         lightColors(
             primary = Color(0xFF6200EE),
             primaryVariant = Color(0xFF3700B3),
-            secondary = Color(0xFF03DAC5)
+            secondary = Color(0xFF03DAC5),
+            background = Color(0xFFFFFFFF),
+            surface = Color(0xFFF0F0F0),
+            onSurface = Color(0xFF000000)
         )
     }
     val typography = Typography(

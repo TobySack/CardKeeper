@@ -85,11 +85,4 @@ class CardListViewModel @Inject constructor(
             savedStateHandle["searchText"] = ""
         }
     }
-
-    fun deleteCardById(id: Long) {
-        viewModelScope.launch {
-            cardDataSource.deleteCardById(id)
-            loadCards()
-        }
-    }
 }

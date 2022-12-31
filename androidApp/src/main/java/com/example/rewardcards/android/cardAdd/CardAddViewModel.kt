@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rewardcards.domain.card.Card
 import com.example.rewardcards.domain.card.CardDataSource
 import com.example.rewardcards.domain.time.DateTimeUtil
+import com.simonsickle.compose.barcodes.BarcodeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,11 +17,10 @@ class CardAddViewModel @Inject constructor(
     private val cardDataSource: CardDataSource,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
-
     private val cardName = savedStateHandle.getStateFlow("cardName", "")
     private val cardImage = savedStateHandle.getStateFlow("cardImage", "")
     private val cardBarcode = savedStateHandle.getStateFlow("cardBarcode", "No Barcode")
-    private val cardType: StateFlow<Int> = savedStateHandle.getStateFlow("cardType", -1)
+    private val cardType = savedStateHandle.getStateFlow("cardType", -1)
     private val cardColor = savedStateHandle.getStateFlow("cardColor", Card.generateRandomColor())
     private val cardNotes = savedStateHandle.getStateFlow("cardNotes", "")
     private val isCardNameFocused = savedStateHandle.getStateFlow("isCardNameFocused", false)
@@ -56,27 +56,6 @@ class CardAddViewModel @Inject constructor(
             isCardNoteHintVisible = notes.isEmpty() && !isNotesFocused
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CardAddState())
-
-    init {
-        savedStateHandle.get<Long>("cardId")?.let { cardId->
-            if (cardId == -1L) {
-                return@let
-            }
-
-            this.cardId = cardId
-
-            viewModelScope.launch {
-                cardDataSource.getCardById(cardId)?.let { card ->
-                    savedStateHandle["cardName"] = card.name
-                    savedStateHandle["cardImage"] = card.image
-                    savedStateHandle["cardBarcode"] = card.barcode
-                    savedStateHandle["cardType"] = card.type
-                    savedStateHandle["cardNotes"] = card.notes
-                    savedStateHandle["cardColor"] = card.color
-                }
-            }
-        }
-    }
 
     fun onCardNameChanged(text: String) {
         savedStateHandle["cardName"] = text
@@ -156,4 +135,24 @@ class CardAddViewModel @Inject constructor(
             t3.third
         )
     }
+}
+
+fun getType(type: Int): BarcodeType {
+    val types = mapOf(
+        BarcodeType.CODE_128 to 1,
+        BarcodeType.CODE_39 to 2,
+        BarcodeType.CODE_93 to 4,
+        BarcodeType.CODABAR to 8,
+        BarcodeType.DATA_MATRIX to 16,
+        BarcodeType.EAN_13 to 32,
+        BarcodeType.EAN_8 to 64,
+        BarcodeType.ITF to 128,
+        BarcodeType.QR_CODE to 256,
+        BarcodeType.UPC_A to 512,
+        BarcodeType.UPC_E to 1024,
+        BarcodeType.PDF_417 to 2048,
+        BarcodeType.AZTEC to 4096
+    )
+
+    return types.filterValues { it == type }.keys.first()
 }
