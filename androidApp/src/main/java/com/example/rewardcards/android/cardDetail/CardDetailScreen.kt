@@ -192,11 +192,12 @@ fun CardDetailScreen(
             ) {
                 Button(
                     onClick = {
-
+                        navController.navigate("cardEdit/${cardId}")
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
                     modifier = Modifier
                         .weight(1f)
+                        .clip(RoundedCornerShape(10.dp))
                 ) {
                     Text(
                         text = "Edit",
@@ -214,6 +215,7 @@ fun CardDetailScreen(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
                     modifier = Modifier
                         .weight(1f)
+                        .clip(RoundedCornerShape(10.dp))
                 ) {
                     Text(
                         text = "Delete",
