@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.simonsickle.compose.barcodes.Barcode
-import com.simonsickle.compose.barcodes.BarcodeType
+import com.example.rewardcards.android.cardDetail.Barcode
+import com.example.rewardcards.android.cardDetail.BarcodeType
 
 @Composable
 fun CardAddScreen(
@@ -104,20 +104,27 @@ fun CardAddScreen(
                         // Barcode is empty so user didn't give permissions for the camera. Would want to let them manually enter the text
                     } else {
                         // Camera isn't active & we have text. Let user have option to retry
-                        val foundBarcodeType = getType(state.cardType)
-                        if (foundBarcodeType.isValueValid(barcodeText)) {
-                            Barcode(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .aspectRatio(16f / 9f)
-                                    .width(250.dp)
-                                    .height(250.dp),
-                                resolutionFactor = 10,
-                                type = foundBarcodeType,
-                                value = barcodeText
-                            )
-                        } else {
-                            Text("Could not render a Barcode")
+                        if (state.cardType > -1) {
+                            val foundBarcodeType = getType(state.cardType)
+                            val barcodeValue = state.cardBarcode
+                            if (foundBarcodeType.isValueValid(barcodeValue)) {
+                                var barcodeWidth = 300
+                                var barcodeHeight = 125
+                                if (foundBarcodeType == BarcodeType.QR_CODE) {
+                                    barcodeWidth = 300
+                                    barcodeHeight = 300
+                                }
+                                Barcode(
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(32.dp),
+                                    resolutionFactor = 10,
+                                    type = foundBarcodeType,
+                                    value = barcodeValue,
+                                    width = barcodeWidth,
+                                    height = barcodeHeight
+                                )
+                            }
                         }
 
                         Button(

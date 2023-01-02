@@ -3,10 +3,10 @@ package com.example.rewardcards.android.cardAdd
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rewardcards.android.cardDetail.BarcodeType
 import com.example.rewardcards.domain.card.Card
 import com.example.rewardcards.domain.card.CardDataSource
 import com.example.rewardcards.domain.time.DateTimeUtil
-import com.simonsickle.compose.barcodes.BarcodeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

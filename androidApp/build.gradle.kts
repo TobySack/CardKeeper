@@ -53,6 +53,8 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    implementation("com.google.zxing:core:3.5.1")
+
     // Barcode model dependencies
     implementation("com.google.mlkit:barcode-scanning:17.0.3")
 
@@ -62,5 +64,5 @@ dependencies {
     implementation("androidx.camera:camera-view:1.3.0-alpha02")
     implementation("androidx.camera:camera-mlkit-vision:1.3.0-alpha02")
 
-    implementation("com.simonsickle:composed-barcodes:1.1.1")
+    //implementation("com.simonsickle:composed-barcodes:1.1.1")
 }

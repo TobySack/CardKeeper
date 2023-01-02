@@ -42,40 +42,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                val navController = rememberNavController()
-
-                NavHost(navController = navController, startDestination = "cardList") {
-                    composable(route = "cardList") {
-                        CardListScreen(navController = navController)
-                    }
-                    composable(route = "cardAdd") {
-                        CardAddScreen(navController = navController)
-                    }
-                    composable(
-                        route = "cardEdit/{cardId}",
-                        arguments = listOf(
-                            navArgument(name = "cardId") {
-                                type = NavType.LongType
-                                defaultValue = -1L
-                            }
-                        )
-                    ) { backStackEntry ->
-                        val cardId = backStackEntry.arguments?.getLong("cardId") ?: -1L
-                        CardEditScreen(cardId = cardId, navController = navController)
-                    }
-                    composable(
-                        route = "cardDetail/{cardId}",
-                        arguments = listOf(
-                            navArgument(name = "cardId") {
-                                type = NavType.LongType
-                                defaultValue = -1L
-                            }
-                        )
-                    ) { backStackEntry ->
-                        val cardId = backStackEntry.arguments?.getLong("cardId") ?: -1L
-                        CardDetailScreen(cardId = cardId, navController = navController)
-                    }
-                }
+                Navigation()
             }
 
             requestCameraPermission()

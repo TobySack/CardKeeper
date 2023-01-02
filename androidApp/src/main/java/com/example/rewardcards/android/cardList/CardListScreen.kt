@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.rewardcards.android.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,7 +41,7 @@ fun CardListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("cardAdd")
+                    navController.navigate(Screen.CardAdd.route)
                 },
                 backgroundColor = Color.Black
             ) {
@@ -95,7 +96,7 @@ fun CardListScreen(
                             card = card,
                             backgroundColor = Color(card.color),
                             onCardClick = {
-                                navController.navigate("cardDetail/${card.id}")
+                                navController.navigate(Screen.CardDetail.withArgs(card.id!!))
                             },
                             modifier = Modifier
                                 .fillMaxSize()

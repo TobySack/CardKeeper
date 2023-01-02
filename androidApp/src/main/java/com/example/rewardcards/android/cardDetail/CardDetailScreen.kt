@@ -1,7 +1,6 @@
 package com.example.rewardcards.android.cardDetail
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.rewardcards.android.Screen
 import com.example.rewardcards.android.cardAdd.getType
 import com.example.rewardcards.domain.time.DateTimeUtil
-import com.simonsickle.compose.barcodes.Barcode
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -103,7 +102,7 @@ fun CardDetailScreen(
                             MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
                         ), RoundedCornerShape(topEnd = 10.dp, topStart = 10.dp)
                     )
-                    .aspectRatio(1f)
+                    .fillMaxWidth()
                     .clipToBounds()
                     .clip(RoundedCornerShape(topEnd = 10.dp, topStart = 10.dp))
                     .background(Color.White)
@@ -112,15 +111,21 @@ fun CardDetailScreen(
                     val foundBarcodeType = getType(state.cardType)
                     val barcodeValue = state.cardBarcode
                     if (foundBarcodeType.isValueValid(barcodeValue)) {
+                        var barcodeWidth = 300
+                        var barcodeHeight = 125
+                        if (foundBarcodeType == BarcodeType.QR_CODE) {
+                            barcodeWidth = 300
+                            barcodeHeight = 300
+                        }
                         Barcode(
                             modifier = Modifier
                                 .align(Alignment.Center)
-                                .padding(32.dp)
-                                .width(250.dp)
-                                .height(250.dp),
+                                .padding(32.dp),
                             resolutionFactor = 10,
                             type = foundBarcodeType,
-                            value = barcodeValue
+                            value = barcodeValue,
+                            width = barcodeWidth,
+                            height = barcodeHeight
                         )
                     }
                 }
@@ -192,7 +197,7 @@ fun CardDetailScreen(
             ) {
                 Button(
                     onClick = {
-                        navController.navigate("cardEdit/${cardId}") {
+                        navController.navigate(Screen.CardEdit.withArgs(cardId)) {
                             navController.currentDestination?.let {
                                 popUpTo(it.id) {
                                     inclusive = true
