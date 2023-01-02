@@ -7,12 +7,12 @@
     <application
         android:name=".CardApp"
         android:label="@string/appName"
-        android:windowSoftInputMode="adjustResize"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

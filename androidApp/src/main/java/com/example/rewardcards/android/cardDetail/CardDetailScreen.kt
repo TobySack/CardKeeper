@@ -192,7 +192,13 @@ fun CardDetailScreen(
             ) {
                 Button(
                     onClick = {
-                        navController.navigate("cardEdit/${cardId}")
+                        navController.navigate("cardEdit/${cardId}") {
+                            navController.currentDestination?.let {
+                                popUpTo(it.id) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
                     modifier = Modifier

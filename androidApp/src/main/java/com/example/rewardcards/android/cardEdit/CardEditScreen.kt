@@ -1,5 +1,6 @@
 package com.example.rewardcards.android.cardEdit
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,15 +24,25 @@ fun CardEditScreen(
     val state by viewModel.state.collectAsState()
     val hasCardBeenUpdated by viewModel.hasCardBeenUpdated.collectAsState()
 
-    LaunchedEffect(key1 = hasCardBeenUpdated) {
-        if (hasCardBeenUpdated) {
-            viewModel.updateSaved(false)
-            navController.navigate("cardDetail/${cardId}") {
-                popUpTo("cardDetail/${cardId}") {
+    fun navigateTo() {
+        navController.navigate("cardDetail/${cardId}") {
+            navController.currentDestination?.let {
+                popUpTo(it.id) {
                     inclusive = true
                 }
             }
         }
+    }
+
+    LaunchedEffect(key1 = hasCardBeenUpdated) {
+        if (hasCardBeenUpdated) {
+            viewModel.updateSaved(false)
+            navigateTo()
+        }
+    }
+
+    BackHandler {
+        navigateTo()
     }
 
     Scaffold(
