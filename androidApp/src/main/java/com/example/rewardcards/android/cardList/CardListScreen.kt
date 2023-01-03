@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,19 +39,25 @@ fun CardListScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
+            ExtendedFloatingActionButton(
+                text = {
+                    Text(
+                        text = "Add Card",
+                        color = Color.White
+                    )
+                },
+                icon = {
+                       Icon(
+                           imageVector = Icons.Default.Add,
+                           contentDescription = "Add Card",
+                           tint = Color.White
+                       )
+                },
                 onClick = {
                     navController.navigate(Screen.CardAdd.route)
                 },
                 backgroundColor = Color.Black
-            ) {
-                Text(
-                    text = "Add Card",
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-            }
+            )
         }
     ) { padding ->
         Column(
@@ -100,7 +106,7 @@ fun CardListScreen(
                             },
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(16.dp)
+                                .padding(8.dp)
                                 .animateItemPlacement()
                         )
                     }

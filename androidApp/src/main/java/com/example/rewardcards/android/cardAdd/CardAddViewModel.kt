@@ -3,6 +3,7 @@ package com.example.rewardcards.android.cardAdd
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rewardcards.android.Company
 import com.example.rewardcards.android.cardDetail.BarcodeType
 import com.example.rewardcards.domain.card.Card
 import com.example.rewardcards.domain.card.CardDataSource
@@ -98,7 +99,7 @@ class CardAddViewModel @Inject constructor(
                     image = cardImage.value,
                     barcode = cardBarcode.value,
                     type = cardType.value,
-                    color = cardColor.value,
+                    color = Company.getCompanyLogo(cardName.value.lowercase()).color,
                     created = DateTimeUtil.now(),
                     notes = cardNotes.value
                 )

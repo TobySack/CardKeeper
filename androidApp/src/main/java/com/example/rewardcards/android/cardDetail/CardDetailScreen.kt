@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.rewardcards.android.Company
 import com.example.rewardcards.android.Screen
 import com.example.rewardcards.android.cardAdd.getType
 import com.example.rewardcards.domain.time.DateTimeUtil
@@ -64,10 +67,15 @@ fun CardDetailScreen(
                             .width(100.dp)
                             .height(100.dp)
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color.Black)
-                            .padding(16.dp)
                     ) {
-                        Text(text = "Logo", color = Color.White)
+                        Image(
+                            painter = painterResource(id = Company.getCompanyLogo(state.cardName.lowercase()).logo),
+                            contentDescription = "",
+                            contentScale = ContentScale.Inside,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp)
+                        )
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Box(

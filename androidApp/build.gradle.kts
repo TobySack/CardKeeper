@@ -65,4 +65,5 @@ dependencies {
     implementation("androidx.camera:camera-mlkit-vision:1.3.0-alpha02")
 
     //implementation("com.simonsickle:composed-barcodes:1.1.1")
+    implementation(kotlin("reflect"))
 }

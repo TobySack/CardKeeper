@@ -1,19 +1,18 @@
 package com.example.rewardcards.android.cardList
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.rewardcards.android.Company
 import com.example.rewardcards.domain.card.Card
 
 @Composable
@@ -28,21 +27,17 @@ fun CardItem(
             .clip(RoundedCornerShape(10.dp))
             .background(backgroundColor)
             .clickable { onCardClick() }
-            .padding(16.dp)
+            .padding(8.dp)
             .aspectRatio(1.586f / 1f)
     ) {
         Row {
-            Text(
-                text = card.name,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                fontSize = 17.sp,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            Image(
+                painter = painterResource(id = Company.getCompanyLogo(card.name.lowercase()).logo),
+                contentDescription = "",
+                contentScale = ContentScale.Inside,
                 modifier = Modifier
                     .fillMaxSize()
-                    .wrapContentSize()
+                    .padding(8.dp)
             )
         }
     }
