@@ -6,6 +6,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.rewardcards.android.cardDetail.AutoResizedText
 import com.example.rewardcards.android.cardDetail.Barcode
 import com.example.rewardcards.android.cardDetail.BarcodeType
 
@@ -40,17 +43,23 @@ fun CardAddScreen(
     
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
+            ExtendedFloatingActionButton(
+                text = {
+                    Text(
+                        text = "Save Card",
+                        color = Color.White
+                    )
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Save Card",
+                        tint = Color.White
+                    )
+                },
                 onClick = viewModel::saveCard,
                 backgroundColor = Color.Black
-            ) {
-                Text(
-                    text = "Save Card",
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-            }
+            )
         }
     ) { padding ->
         Column(
@@ -74,6 +83,7 @@ fun CardAddScreen(
             Spacer(modifier = Modifier.height(24.dp))
             // Card Barcode or QR code
             Box(
+                contentAlignment = Alignment.TopCenter,
                 modifier = Modifier
                     .border(
                         BorderStroke(
@@ -81,15 +91,17 @@ fun CardAddScreen(
                             MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
                         ), RoundedCornerShape(10.dp)
                     )
-                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(10.dp))
                     .clipToBounds()
+                    .background(Color.White)
+                    .aspectRatio(1f)
             ) {
-                Text(
+                AutoResizedText(
                     text = barcodeText,
+                    style = MaterialTheme.typography.h4,
+                    color = Color.Black,
                     modifier = Modifier
                         .padding(8.dp, 16.dp)
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
                 )
                 if (isCameraActive) {
                     CameraPreview(
@@ -137,8 +149,10 @@ fun CardAddScreen(
                         ) {
                             Text(
                                 text = "Try Again",
+                                textAlign = TextAlign.Center,
                                 color = Color.White,
                                 modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(8.dp)
                             )
                         }

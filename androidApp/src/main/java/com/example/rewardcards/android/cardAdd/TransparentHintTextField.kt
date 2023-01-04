@@ -1,14 +1,17 @@
 package com.example.rewardcards.android.cardAdd
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -39,6 +42,8 @@ fun TransparentHintTextField(
             textStyle = textStyle,
             modifier = Modifier
                 .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colors.surface)
                 .onFocusChanged { state ->
                     onFocusedChanged(state)
                 }
@@ -48,7 +53,7 @@ fun TransparentHintTextField(
             Text(
                 text = hint,
                 style = textStyle,
-                color = Color.DarkGray,
+                color = Color.Gray,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),

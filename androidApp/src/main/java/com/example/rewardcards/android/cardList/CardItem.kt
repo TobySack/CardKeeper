@@ -32,7 +32,7 @@ fun CardItem(
     ) {
         Row {
             Image(
-                painter = painterResource(id = Company.getCompanyLogo(card.name.lowercase()).logo),
+                painter = painterResource(id = Company.getCompanyLogo(card.name.lowercase().trim()).logo),
                 contentDescription = "",
                 contentScale = ContentScale.Inside,
                 modifier = Modifier

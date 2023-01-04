@@ -11,14 +11,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,10 +37,17 @@ fun CardDetailScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val barcodeText = if (state.cardType <= -1) "Could not render a Barcode" else state.cardBarcode
-    val cardNotes = state.cardNotes.ifEmpty { "None" }
+    val cardNotes = state.cardNotes.ifEmpty { "Add notes..." }
+    val clipboardManager = LocalClipboardManager.current
     val formattedDate = remember(state.cardCreated) {
         DateTimeUtil.formatCardDate(state.cardCreated)
     }
+    val formattedTime = remember(state.cardCreated) {
+        DateTimeUtil.getTime(state.cardCreated)
+    }
+
+    val luminance: Double = (0.299 * Color(state.cardColor).red + 0.587 * Color(state.cardColor).green + 0.114 * Color(state.cardColor).blue) / 255
+    val textColor = if (luminance > 0.002) Color(0, 0, 0) else Color(255, 255, 255)
 
     Column(
         modifier = Modifier
@@ -69,7 +76,7 @@ fun CardDetailScreen(
                             .clip(RoundedCornerShape(10.dp))
                     ) {
                         Image(
-                            painter = painterResource(id = Company.getCompanyLogo(state.cardName.lowercase()).logo),
+                            painter = painterResource(id = Company.getCompanyLogo(state.cardName.lowercase().trim()).logo),
                             contentDescription = "",
                             contentScale = ContentScale.Inside,
                             modifier = Modifier
@@ -80,8 +87,9 @@ fun CardDetailScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     Box(
                         modifier = Modifier
-                            .width(5.dp)
+                            .width(2.dp)
                             .height(100.dp)
+                            .alpha(0.25f)
                             .clip(RoundedCornerShape(3.dp))
                             .background(Color.Black)
                     )
@@ -89,14 +97,18 @@ fun CardDetailScreen(
                     Column {
                         Text(
                             text = state.cardName,
-                            color = Color.Black,
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
+                            color = textColor,
+                            fontSize = 22.sp
                         )
                         Text(
                             text = formattedDate,
-                            color = Color.Black,
-                            fontSize = 14.sp
+                            color = textColor,
+                            fontSize = 13.sp
+                        )
+                        Text(
+                            text = formattedTime,
+                            color = textColor,
+                            fontSize = 13.sp
                         )
                     }
                 }
@@ -104,12 +116,6 @@ fun CardDetailScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Box(
                 modifier = Modifier
-                    .border(
-                        BorderStroke(
-                            1.dp,
-                            MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
-                        ), RoundedCornerShape(topEnd = 10.dp, topStart = 10.dp)
-                    )
                     .fillMaxWidth()
                     .clipToBounds()
                     .clip(RoundedCornerShape(topEnd = 10.dp, topStart = 10.dp))
@@ -125,6 +131,7 @@ fun CardDetailScreen(
                             barcodeWidth = 300
                             barcodeHeight = 300
                         }
+                        BarcodeBrightness()
                         Barcode(
                             modifier = Modifier
                                 .align(Alignment.Center)
@@ -139,25 +146,20 @@ fun CardDetailScreen(
                 }
             }
             Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
-                    .background(MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled))
-                    .height(50.dp)
+                    .background(Color.White)
                     .padding(16.dp)
+                    .clickable {
+                        clipboardManager.setText(AnnotatedString(barcodeText))
+                    }
             ) {
-                Text(
+                AutoResizedText(
                     text = barcodeText,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 17.sp,
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 4.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize()
+                    style = MaterialTheme.typography.h4,
+                    color = Color.Black
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -178,9 +180,8 @@ fun CardDetailScreen(
                     ) {
                         Text(
                             text = "Notes",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 22.sp,
-                            color = Color.Black
+                            fontSize = 20.sp,
+                            color = textColor
                         )
                     }
                     Box(
@@ -188,6 +189,15 @@ fun CardDetailScreen(
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
                             .background(MaterialTheme.colors.surface)
+                            .clickable {
+                                navController.navigate(Screen.CardEdit.withArgs(cardId)) {
+                                    navController.currentDestination?.let {
+                                        popUpTo(it.id) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                            }
                     ) {
                         Text(
                             text = cardNotes,
@@ -213,13 +223,14 @@ fun CardDetailScreen(
                             }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.surface),
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Text(
                         text = "Edit",
+                        fontSize = 17.sp,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
                             .padding(16.dp)
@@ -231,13 +242,14 @@ fun CardDetailScreen(
                         viewModel.deleteCardById(cardId)
                         navController.popBackStack()
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.surface),
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Text(
                         text = "Delete",
+                        fontSize = 17.sp,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
                             .padding(16.dp)

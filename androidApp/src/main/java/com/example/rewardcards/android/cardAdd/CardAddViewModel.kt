@@ -99,7 +99,7 @@ class CardAddViewModel @Inject constructor(
                     image = cardImage.value,
                     barcode = cardBarcode.value,
                     type = cardType.value,
-                    color = Company.getCompanyLogo(cardName.value.lowercase()).color,
+                    color = Company.getCompanyLogo(cardName.value.lowercase().trim()).color,
                     created = DateTimeUtil.now(),
                     notes = cardNotes.value
                 )

@@ -89,13 +89,14 @@ fun CardListScreen(
                     Text(
                         text = "My Cards",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp
+                        fontSize = 25.sp
                     )
                 }
             }
             
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(175.dp),
+                contentPadding = PaddingValues(4.dp),
                 content = {
                     items(state.cards) { card ->
                         CardItem(
@@ -106,7 +107,7 @@ fun CardListScreen(
                             },
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(8.dp)
+                                .padding(4.dp)
                                 .animateItemPlacement()
                         )
                     }
